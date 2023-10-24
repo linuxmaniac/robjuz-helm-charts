@@ -105,7 +105,14 @@ Return the MariaDB Password
 */}}
 {{- define "kimai.databasePassword" -}}
 {{- if .Values.mariadb.enabled }}
-    {{- printf "%s" .Values.mariadb.auth.password -}}
+    {{- if .Values.mariadb.auth.existingSecret }}
+        {{- $secret := (lookup "v1" "Secret" .Release.Namespace (include "mariadb.secretName" .)).data -}}
+        {{- if hasKey $secret "mariadb-password" }}
+            {{- printf "%s" (get $secret "mariadb-password") -}}
+        {{- end -}}
+    {{- else -}}
+        {{- printf "%s" .Values.mariadb.auth.password -}}
+    {{- end -}}
 {{- else -}}
     {{- printf "%s" .Values.externalDatabase.password -}}
 {{- end -}}

@@ -847,6 +847,9 @@ mariadb:
     database: kimai
     username: kimai
     password: kimai
+    ## @param mariadb.auth.existingSecret Use existing secret for password details (`mariadb.auth.rootPassword`, `mariadb.auth.password` will be ignored and picked up from this secret).
+    ## The secret has to contain the keys `mariadb-root-password` and `mariadb-password`
+    existingSecret: ""
   ## MariaDB Primary configuration
   ##
   primary:
